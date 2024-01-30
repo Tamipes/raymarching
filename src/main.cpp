@@ -63,27 +63,37 @@ int main(void)
   // shader and buffers
   Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert",
                               RESOURCES_PATH "/shaders/quad.frag");
+  
+  unsigned int vao;
+  glGenVertexArrays(1,&vao);
+  glBindVertexArray(vao);
 
-  VAO *vao = new VAO();
-  vao->Bind();
-  VBO *vbo = new VBO(positions, 8 * sizeof(GLfloat));
-  EBO *ebo = new EBO(indeces, 6 * sizeof(GLuint));
-  vao->LinkVBO(*vbo, 0);
+  unsigned int vbo;
+  glGenBuffers(1,&vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER,12 * sizeof(float), positions,GL_STATIC_DRAW);
 
+  glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3 * sizeof(float),0);
+  glEnableVertexAttribArray(0);
+
+  unsigned int ibo;
+  glGenBuffers(1,&ibo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,6* sizeof(unsigned int), indeces,GL_STATIC_DRAW);  
+  
   glDisable(GL_DEPTH_TEST);
+  
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
-    std::cout << "asda" << std::endl;
-    /*int width = 0, height = 0;
+    int width = 0, height = 0;
     glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);*/
+    glViewport(0, 0, width, height);
 
     glClear(GL_COLOR_BUFFER_BIT);
 
     shader->Activate();
-    vao->Bind();
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -93,9 +103,6 @@ int main(void)
 
   glfwTerminate();
 
-  delete vao;
-  delete vbo;
-  delete ebo;
   delete shader;
 
   return 0;
