@@ -2,14 +2,15 @@
 
 #include "openglDebug.h"
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <iostream>
 
 #include "EBO.h"
 #include "VAO.h"
 #include "VBO.h"
 #include "shaderClass.h"
 
-int main(void) {
+int main(void)
+{
   if (!glfwInit())
     return -1;
 
@@ -24,7 +25,8 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   GLFWwindow *window = glfwCreateWindow(640, 480, "Demo", NULL, NULL);
-  if (!window) {
+  if (!window)
+  {
     std::cout << "Failed to create GLFW window!" << std::endl;
     glfwTerminate();
     return -1;
@@ -32,7 +34,8 @@ int main(void) {
 
   glfwMakeContextCurrent(window);
 
-  if (!gladLoadGL()) {
+  if (!gladLoadGL())
+  {
     std::cout << "Failed to initialize OpenGL context" << std::endl;
     return -1;
   }
@@ -49,10 +52,10 @@ int main(void) {
 
   // quad infos
   float positions[] = {
-      -1.0f, -1.0f, // 0
-      1.0f,  -1.0f, // 1
-      1.0f,  1.0f,  // 2
-      -1.0f, 1.0f   // 3
+      -1.0f, -1.0f, 0.0f, // 0
+      1.0f, -1.0f, 0.0f,  // 1
+      1.0f, 1.0f, 0.0f,   // 2
+      -1.0f, 1.0f, 0.0f   // 3
   };
 
   unsigned int indeces[] = {0, 1, 2, 2, 3, 0};
@@ -63,18 +66,19 @@ int main(void) {
 
   VAO *vao = new VAO();
   vao->Bind();
-  VBO *vbo = new VBO(positions, 8 * sizeof(float));
-  EBO *ebo = new EBO(indeces, 6 * sizeof(unsigned int));
+  VBO *vbo = new VBO(positions, 8 * sizeof(GLfloat));
+  EBO *ebo = new EBO(indeces, 6 * sizeof(GLuint));
   vao->LinkVBO(*vbo, 0);
 
   glDisable(GL_DEPTH_TEST);
 
   /* Loop until the user closes the window */
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window))
+  {
     std::cout << "asda" << std::endl;
-    int width = 0, height = 0;
+    /*int width = 0, height = 0;
     glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, width, height);*/
 
     glClear(GL_COLOR_BUFFER_BIT);
 
