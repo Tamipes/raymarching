@@ -4,9 +4,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "EBO.h"
-#include "VAO.h"
-#include "VBO.h"
 #include "shaderClass.h"
 
 int main(void)
