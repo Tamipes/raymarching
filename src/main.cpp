@@ -1,25 +1,30 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
 
+#include "openglDebug.h"
+#include <GLFW/glfw3.h>
+#include <iostream>
+
+#include "EBO.h"
 #include "VAO.h"
 #include "VBO.h"
-#include "EBO.h"
 #include "shaderClass.h"
 
-int main(void)
-{
+int main(void) {
   if (!glfwInit())
     return -1;
 
+#pragma region report opengl errors to std
+  // enable opengl debugging output.
+  glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#pragma endregion
+
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   GLFWwindow *window = glfwCreateWindow(640, 480, "Demo", NULL, NULL);
-  if (!window)
-  {
+  if (!window) {
     std::cout << "Failed to create GLFW window!" << std::endl;
     glfwTerminate();
     return -1;
@@ -27,26 +32,34 @@ int main(void)
 
   glfwMakeContextCurrent(window);
 
+  if (!gladLoadGL()) {
+    std::cout << "Failed to initialize OpenGL context" << std::endl;
+    return -1;
+  }
   // turn off vsync
   // glfwSwapInterval(0);
 
-  // gladLoadGL();
-  gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); // Might not need this, but ju know...
+#pragma region report opengl errors to std
+  glEnable(GL_DEBUG_OUTPUT);
+  glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+  glDebugMessageCallback(glDebugOutput, 0);
+  glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr,
+                        GL_TRUE);
+#pragma endregion
 
   // quad infos
   float positions[] = {
       -1.0f, -1.0f, // 0
-      1.0f, -1.0f,  // 1
-      1.0f, 1.0f,   // 2
+      1.0f,  -1.0f, // 1
+      1.0f,  1.0f,  // 2
       -1.0f, 1.0f   // 3
   };
 
-  unsigned int indeces[] = {
-      0, 1, 2,
-      2, 3, 0};
+  unsigned int indeces[] = {0, 1, 2, 2, 3, 0};
 
   // shader and buffers
-  Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert", RESOURCES_PATH "/shaders/quad.frag");
+  Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert",
+                              RESOURCES_PATH "/shaders/quad.frag");
 
   VAO *vao = new VAO();
   vao->Bind();
@@ -57,8 +70,8 @@ int main(void)
   glDisable(GL_DEPTH_TEST);
 
   /* Loop until the user closes the window */
-  while (!glfwWindowShouldClose(window))
-  {
+  while (!glfwWindowShouldClose(window)) {
+    std::cout << "asda" << std::endl;
     int width = 0, height = 0;
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
