@@ -1,61 +1,85 @@
-// #include <iostream>
-// #include "tami.h"
-// #include "GlFW/glfw3.h"
-
-// int main() {
-//   int a = 1;
-//   int b = 2;
-//   int c = func(a,b);
-//   std::cout << "Var is: "<<c << std::endl;
-//   return 0;
-// }
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "VAO.h"
+#include "VBO.h"
+#include "EBO.h"
+#include "shaderClass.h"
+
 int main(void)
 {
-  GLFWwindow *window;
-  std::cout << "modified" << std::endl;
-  /* Initialize the library */
   if (!glfwInit())
     return -1;
 
-  /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+  GLFWwindow *window = glfwCreateWindow(640, 480, "Demo", NULL, NULL);
   if (!window)
   {
+    std::cout << "Failed to create GLFW window!" << std::endl;
     glfwTerminate();
     return -1;
   }
 
-  /* Make the window's context current */
   glfwMakeContextCurrent(window);
 
-  gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  // turn off vsync
+  // glfwSwapInterval(0);
+
+  // gladLoadGL();
+  gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); // Might not need this, but ju know...
+
+  // quad infos
+  float positions[] = {
+      -1.0f, -1.0f, // 0
+      1.0f, -1.0f,  // 1
+      1.0f, 1.0f,   // 2
+      -1.0f, 1.0f   // 3
+  };
+
+  unsigned int indeces[] = {
+      0, 1, 2,
+      2, 3, 0};
+
+  // shader and buffers
+  Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert", RESOURCES_PATH "/shaders/quad.frag");
+
+  VAO *vao = new VAO();
+  vao->Bind();
+  VBO *vbo = new VBO(positions, 8 * sizeof(float));
+  EBO *ebo = new EBO(indeces, 6 * sizeof(unsigned int));
+  vao->LinkVBO(*vbo, 0);
+
+  glDisable(GL_DEPTH_TEST);
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
     int width = 0, height = 0;
-
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
+
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_TRIANGLES);
-    glColor3f(1, 0, 0);
-    glVertex2f(0, 1);
-    glColor3f(0, 1, 0);
-    glVertex2f(1, -1);
-    glColor3f(0, 0, 1);
-    glVertex2f(-1, -1);
-    glEnd();
+    shader->Activate();
+    vao->Bind();
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
 
   glfwTerminate();
+
+  delete vao;
+  delete vbo;
+  delete ebo;
+  delete shader;
+
   return 0;
 }
