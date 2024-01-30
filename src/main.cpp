@@ -13,7 +13,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-int main(void) {
+int main(void)
+{
   GLFWwindow *window;
   std::cout << "modified" << std::endl;
   /* Initialize the library */
@@ -22,7 +23,8 @@ int main(void) {
 
   /* Create a windowed mode window and its OpenGL context */
   window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-  if (!window) {
+  if (!window)
+  {
     glfwTerminate();
     return -1;
   }
@@ -33,25 +35,26 @@ int main(void) {
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
   /* Loop until the user closes the window */
-  while (!glfwWindowShouldClose(window)) {
-int width = 0, height = 0;
+  while (!glfwWindowShouldClose(window))
+  {
+    int width = 0, height = 0;
 
-		glfwGetFramebufferSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-		glBegin(GL_TRIANGLES);
-		glColor3f(1, 0, 0);
-		glVertex2f(0,1);
-		glColor3f(0, 1, 0);
-		glVertex2f(1,-1);
-		glColor3f(0, 0, 1);
-		glVertex2f(-1,-1);
-		glEnd();
+    glBegin(GL_TRIANGLES);
+    glColor3f(1, 0, 0);
+    glVertex2f(0, 1);
+    glColor3f(0, 1, 0);
+    glVertex2f(1, -1);
+    glColor3f(0, 0, 1);
+    glVertex2f(-1, -1);
+    glEnd();
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-		  }
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
 
   glfwTerminate();
   return 0;
