@@ -21,7 +21,7 @@ int main(void)
 
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow *window = glfwCreateWindow(640, 480, "Demo", NULL, NULL);
+  GLFWwindow *window = glfwCreateWindow(1600, 900, "Demo", NULL, NULL);
   if (!window)
   {
     std::cout << "Failed to create GLFW window!" << std::endl;
@@ -60,26 +60,25 @@ int main(void)
   // shader and buffers
   Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert",
                               RESOURCES_PATH "/shaders/quad.frag");
-  
+
   unsigned int vao;
-  glGenVertexArrays(1,&vao);
+  glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 
   unsigned int vbo;
-  glGenBuffers(1,&vbo);
+  glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER,12 * sizeof(float), positions,GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), positions, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3 * sizeof(float),0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
   glEnableVertexAttribArray(0);
 
   unsigned int ibo;
-  glGenBuffers(1,&ibo);
+  glGenBuffers(1, &ibo);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,6* sizeof(unsigned int), indeces,GL_STATIC_DRAW);  
-  
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indeces, GL_STATIC_DRAW);
+
   glDisable(GL_DEPTH_TEST);
-  
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
