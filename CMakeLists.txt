@@ -6,9 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Define MY_SOURCES to be a list of all the source files in the "src" directory
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
+file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/eng/*.cpp")
+
 project(Demo)
 
-add_executable("${CMAKE_PROJECT_NAME}" ${MY_SOURCES})
+add_executable("${CMAKE_PROJECT_NAME}")
+
+target_sources("${CMAKE_PROJECT_NAME}" PRIVATE ${MY_SOURCES} )
+target_sources("${CMAKE_PROJECT_NAME}" PRIVATE ${ENGINE_SOURCES} )
 
 # GLFW compile here
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

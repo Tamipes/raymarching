@@ -11,7 +11,7 @@ public:
 	VAO();
 	~VAO();
 
-	void LinkVBO(VBO vbo, GLuint layout);
+	void LinkVBO(VBO& vbo, GLuint layout);
 	void Bind();
 	void Unbind();
 	void Delete();

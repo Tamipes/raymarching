@@ -1,10 +1,19 @@
 #include <glad/glad.h>
 
+#include "EBO.h"
+#include "VAO.h"
+#include "VBO.h"
 #include "openglDebug.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 
 #include "shaderClass.h"
+
+#include "../eng/input/clb.h"
+
+void mouseCallback(GLFWwindow* window, int button, int action, int mods){
+  std::cout<<"Im from the program" << std::endl;
+}
 
 int main(void)
 {
@@ -38,7 +47,10 @@ int main(void)
   }
   // turn off vsync
   // glfwSwapInterval(0);
-
+  cms::clb::SetupCLB(window,nullptr);
+  cms::clb::SetMouseButton(window,mouseCallback);
+  std::cout << "after clb" << std::endl;
+  
 #pragma region report opengl errors to std
   glEnable(GL_DEBUG_OUTPUT);
   glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -61,23 +73,13 @@ int main(void)
   Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert",
                               RESOURCES_PATH "/shaders/quad.frag");
 
-  unsigned int vao;
-  glGenVertexArrays(1, &vao);
-  glBindVertexArray(vao);
+  VAO* vao = new VAO(); 
+  VBO* vbo = new VBO(positions,12 * sizeof(float) );
+  vao->LinkVBO(*vbo,0 );
+  
+  EBO* ebo = new EBO(indeces,sizeof(indeces));
 
-  unsigned int vbo;
-  glGenBuffers(1, &vbo);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), positions, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-  glEnableVertexAttribArray(0);
-
-  unsigned int ibo;
-  glGenBuffers(1, &ibo);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indeces, GL_STATIC_DRAW);
-
+  
   glDisable(GL_DEPTH_TEST);
 
   /* Loop until the user closes the window */

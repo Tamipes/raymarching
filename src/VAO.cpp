@@ -8,8 +8,9 @@ VAO::~VAO()
 {
 	this->Delete();
 }
-void VAO::LinkVBO(VBO vbo, GLuint layout)
+void VAO::LinkVBO(VBO& vbo, GLuint layout)
 {
+	this->Bind();
 	vbo.Bind();
 
 	// (id, # of components per vertex attrib, type of array component, should get normalized?, byte offset between vertex attrib, offset of first component in array)

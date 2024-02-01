@@ -1,6 +1,6 @@
 #include "VBO.h"
 
-VBO::VBO(GLfloat *vertecies, GLsizeiptr size)
+VBO::VBO(const void * data, GLsizeiptr size)
 {
 	// generate VBO buffer on the GPU
 	glGenBuffers(1, &ID);
@@ -14,7 +14,7 @@ VBO::VBO(GLfloat *vertecies, GLsizeiptr size)
 		GL_STATIC_DRAW: the data is set only once and used many times.
 		GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
 	*/
-	glBufferData(GL_ARRAY_BUFFER, size, vertecies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 VBO::~VBO()
 {

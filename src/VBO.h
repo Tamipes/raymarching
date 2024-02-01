@@ -3,16 +3,15 @@
 
 #include <glad/glad.h>
 
-class VBO
-{
+class VBO {
 public:
-	GLuint ID;
-	VBO(GLfloat *vertecies, GLsizeiptr size);
-	~VBO();
+  GLuint ID;
+  VBO(const void *data, GLsizeiptr size);
+  ~VBO();
 
-	void Bind();
-	void Unbind();
-	void Delete();
+  void Bind();
+  void Unbind();
+  void Delete();
 };
 
 #endif
