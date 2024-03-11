@@ -17,8 +17,10 @@ void mouseCallback(GLFWwindow* window, int button, int action, int mods){
 
 int main(void)
 {
-  if (!glfwInit())
+  if (!glfwInit()){
+    std::cout << "ERROR: GLFW could NOT be initialized." << std::endl;
     return -1;
+  }
 
 #pragma region report opengl errors to std
   // enable opengl debugging output.
