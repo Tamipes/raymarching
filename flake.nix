@@ -17,12 +17,9 @@
           version = "0.0.1";
           src = ./.;
           nativeBuildInputs = [
-            # pkg-config
             cmake
-            # libGL
           ];
           buildInputs = [
-            # pkg-config
             xorg.libX11
             xorg.libX11.dev
             xorg.libXrandr
@@ -32,10 +29,7 @@
             xorg.libXext
           ];
           propagatedBuildInputs = [
-            # xorg.libX11
-            # xorg.libX11.dev
             libGL
-            # pkg-config
           ];
           # buildPhase = "make -j $NIX_BUILD_CORES";
           installPhase = ''
@@ -63,9 +57,12 @@
         # shellHook = ''
         # export LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib";
         # '';
-        # shellHook = ''
-        # export LD_LIBRARY_PATH="";
-        # '';
+          # cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G Ninja -B build .
+        shellHook = ''
+          mkdir build
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B build .
+        '';
+          # cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B build .
         buildInputs = [
           # pkgs.clang
           # pkgs.cmake
@@ -76,8 +73,9 @@
           # pkgs.xorg.libXi
           # pkgs.libGL
           # pkgs.glfw
+          pkgs.clang-tools_17
           damiRaymarch 
-        ];
+        ] ++ (with pkgs; [ cmake libGL ]) ++ (with pkgs.xorg; [ libX11 libXrandr libXinerama libXcursor libXi libXext ]);
       };
     }
   );
