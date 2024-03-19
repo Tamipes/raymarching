@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs = {
-      url = "nixpkgs";
+      url = "github:nixos/nixpkgs/nixpkgs-unstable";
     };
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -41,6 +41,7 @@
           installPhase = ''
             mkdir -p $out/bin
             find $TMP -type d -maxdepth 1 | grep source | xargs -I{} cp {}/build/Demo $out/bin/damiRaymarch
+            find $TMP -type d -maxdepth 1 | grep source | xargs -I{} cp -r {}/resources $out/resources
             cp -r $TMP $out/src
           '';
           #mv $TMP/LightGBM/lightgbm $out/bin
@@ -48,6 +49,7 @@
 
           cmakeFlags = [
             # "-DBUILD_SHARED_LIBS=ON"
+            "-DBUILD_NIXOS=ON"
             "-DCMAKE_C_FLAGS=-D_GLFW_GLX_LIBRARY='\"${lib.getLib libGL}/lib/libGL.so.1\"'"
           ];
         }

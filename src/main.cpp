@@ -48,7 +48,7 @@ int main(void)
     return -1;
   }
   // turn off vsync
-  // glfwSwapInterval(0);
+  //glfwSwapInterval(0);
   cms::clb::SetupCLB(window,nullptr);
   cms::clb::SetMouseButton(window,mouseCallback);
   std::cout << "after clb" << std::endl;
@@ -72,8 +72,8 @@ int main(void)
   unsigned int indeces[] = {0, 1, 2, 2, 3, 0};
 
   // shader and buffers
-  Shader *shader = new Shader(RESOURCES_PATH "/shaders/quad.vert",
-                              RESOURCES_PATH "/shaders/quad.frag");
+  Shader *shader = new Shader(RESOURCES_PATH "shaders/quad.vert",
+                              RESOURCES_PATH "shaders/quad.frag");
 
   VAO* vao = new VAO(); 
   VBO* vbo = new VBO(positions,12 * sizeof(float) );

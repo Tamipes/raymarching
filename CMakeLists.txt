@@ -24,6 +24,18 @@ add_subdirectory(dependencies/glad)
 add_subdirectory(dependencies/glm)
 target_link_libraries("${CMAKE_PROJECT_NAME}" glfw glad glm)
 
+#Nixos stuff here
+option(BUILD_NIXOS "Enable or disable building for NixOS with nix." OFF)
+
+if (UNIX)
+    if(BUILD_NIXOS)
+        MESSAGE(STATUS "INFO: Building for NixOS targeting this path for resources: $ENV{out}/resources")
+        target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="$ENV{out}/resources/")
+    else()
+        MESSAGE(STATUS "INFO: Trying the default build(like windows).")
+    endif()
+endif ()
+
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/") # This is useful to get an ASSETS_PATH in your IDE during development but you should comment this if you compile a release version and uncomment the next line
 #target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/") # Uncomment this line to setup the ASSETS_PATH macro to the final assets directory when you share the game
 
