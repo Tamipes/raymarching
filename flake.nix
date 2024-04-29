@@ -36,8 +36,8 @@
           mkdir -p $out/bin
           find $TMP -type d -maxdepth 1 | grep source | xargs -I{} cp {}/build/Demo $out/bin/damiRaymarch
           find $TMP -type d -maxdepth 1 | grep source | xargs -I{} cp -r {}/resources $out/resources
-          cp -r $TMP $out/src
         '';
+        # cp -r $TMP $out/src
 
         cmakeFlags = [
           # "-DBUILD_SHARED_LIBS=ON"
