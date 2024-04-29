@@ -58,13 +58,14 @@
           cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B build .
         '';
 
-        buildInputs = [
-          # LSP setup:
-          pkgs.clang-tools_17
-          pkgs.cmake-language-server
+        inputsFrom = [ damiRaymarch ];
+        # buildInputs = [
+        #   # LSP setup:
+        #   pkgs.clang-tools_17
+        #   pkgs.cmake-language-server
 
-          damiRaymarch
-        ] ++ (with pkgs; [ cmake libGL ]) ++ (with pkgs.xorg; [ libX11 libXrandr libXinerama libXcursor libXi libXext ]);
+        #   damiRaymarch
+        # ] ++ (with pkgs; [ cmake libGL ]) ++ (with pkgs.xorg; [ libX11 libXrandr libXinerama libXcursor libXi libXext ]);
       };
     }
   );
