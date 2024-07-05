@@ -19,6 +19,7 @@
         nativeBuildInputs = [
           cmake
         ];
+        patches = [ ./dependencies/glfw_x11.patch ];
         buildInputs = [
           xorg.libX11
           xorg.libX11.dev
