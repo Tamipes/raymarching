@@ -55,8 +55,8 @@
       defaultPackage = damiRaymarch;
       devShell = pkgs.mkShell {
         shellHook = ''
-          mkdir build
-          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B build .
+          mkdir .build
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B .build .
         '';
         packages = [ pkgs.clang-tools ];
 
